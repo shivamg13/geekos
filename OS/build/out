@@ -1,0 +1,3 @@
+WARNING: gcc -m32 -Wno-error=unused-parameter builds for  x86_64-linux-gnu
+gcc -m32 -Wno-error=unused-parameter -c -Werror -Wall   -W -Wwrite-strings -fno-stack-protector -Wno-unused -g -DGEEKOS -I../include ../src/geekos/vfs.c -o geekos/vfs.o
+Makefile.common:249: recipe for target 'geekos/vfs.o' failed

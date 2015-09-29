@@ -1,0 +1,11 @@
+# Submit server .submit file for
+#  Course CMSC412
+#  Project P6: Users and File Protection
+
+courseName=CMSC412
+semester=201401
+projectNumber=P6
+courseKey=691ed95c33eec14d
+authentication.type=ldap
+baseURL=https://submit.cs.umd.edu:443/spring2014
+submitURL=https://submit.cs.umd.edu:443/spring2014/eclipse/SubmitProjectViaEclipse

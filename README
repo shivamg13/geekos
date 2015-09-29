@@ -1,0 +1,43 @@
+Pratyaksh Sharma 120050019
+Shivam Garg 12D020036
+Siddhartha Dutta 120040005
+Prateesh Goyal 120050013
+Aditya Nambiar 12D070012
+Amol Agarwal 120110031
+
+Functionalities implemented: 
+1. Demand paging
+2. Page-in of pages from swap space to memory 
+3. Write out of pages from memory to swap space
+4. Two handed clock page replacement policy
+
+
+Debugging messages printed:
+1. "Loding user program" when a process is being spawned
+2. "Segment start address is ... and size is ..." when we are reading the segments from an executable. 
+3. "pagefile index given = ..." when we want to write a page onto a disk and we ask for space from the disk
+4. "write fault!" when the program is growing in size and wants more pages to be allocated to it. 
+
+How to test: 
+1. To test demand paging:
+	a. change directory to build and run `make`
+	b. run `qemu-system-i386 diskc.img`
+	c. in the qemu console, run the command `b.exe <arg1> <arg2> ...` where the arguments can be any string
+	d. if the program prints "arg0 is b arg1 is <arg1> ..." then it's working fine. This means that the program was loaded into the swap space at first and while execution page-in operations moved the required pages to memory and the execution completed successfuly. 
+
+2. To test page outs and page replacement, we reduce the ram size and run the program b.exe
+	a. Make sure that the DEFAULT_USER_STACK_SIZE in /src/geekos/uservm.c is 8192
+	b. change directory to build and run `make`
+	c. run `qemu-system-i386 -m 2.2M diskc.img` - for running qemu with just 2.2 MB of RAM 
+	d. int the qemu console, run the command `b.exe` which has a large array that can't fit in the available in the memory - thus there will be page faults and page replacement. 
+	e. When the pages are not sufficient, "trying to evict" will be printed. "pagefile index given = ..." will denote where the page will be written out on the disk. 
+	f. The values of p1 and p2 indicate the two hands of the clock. 
+	g. if the accessed bit of the page table entry will be 0, the page can be evicted which will print "Found page". 
+
+3. To test write faults (process is growing in size and asks for more pages to be allocated):
+	a. In src/geekos/uservm.c change DEFAULT_USER_STACK_SIZE from 8192 to 8192 * 512. This is done because we want to execute a program with a recursion depth of 512 - this will require a stack size larger than 8192 bytes.
+	b. change directory to build and run `make`
+	c. run `qemu-system-i386 diskc.img`
+	d. in the qemu console, run the command `rec.exe` - which is the test program (recursion depth 512). This will produce a lot of write faults. 
+	e. if the write faults are handled correctly, the program will exit fine and print "Rec 512 success" at he end. 
+
